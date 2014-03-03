@@ -5,7 +5,7 @@ input [7:0] A, B;
 
 output C;
 
-reg [4:0]C;
+reg [3:0]C;
 integer i;
 
 always @(A or B) begin

@@ -6,7 +6,7 @@ input [7:0] A, B;
 // ===== OUTPUTS =====
 output C;
 
-reg [2:0]C;
+reg [1:0]C;
 
 always @(A or B) begin
   
