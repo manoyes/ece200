@@ -10,10 +10,12 @@ wire [1:0]C;
 comparator_structural cbt(A,B,C);
 
 initial begin
-  A = 8'b00000000;  B = 8'b00000000;
-  #10 A = 8'b00000001;
-  #10 B = 8'b00000010;
-  //#10 $finish;
+  A = 8'b00000000;  B = 8'b00000000; // C should be 00
+  #10 A = 8'b00000001; B = 8'b00000001; // C should be 00
+  #10 A = 8'b00000010; // C should be 01
+  #10 B = 8'b00000100; // C should be 10
+  #10 A = 8'b11111110; // C should be 01
+  #10 $finish;
 end
 
 initial

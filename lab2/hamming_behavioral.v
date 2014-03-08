@@ -3,6 +3,7 @@ module hamming_behavioral (A, B, C);
 // ===== INPUTS =====
 input [7:0] A, B;
 
+// ===== OUTPUTS =====
 output C;
 
 reg [3:0]C;
