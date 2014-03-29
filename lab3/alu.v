@@ -23,7 +23,7 @@ case (Control)
 4'b0111 : WriteData = (ReadData1 < ReadData2 ? 1 : 0);
 4'b1100 : WriteData = ~(ReadData1 | ReadData2);
 
-  default : $display("Error in Control"); 
+default : $display("Error in Control"); 
 endcase 
 
 end
