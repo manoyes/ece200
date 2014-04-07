@@ -38,9 +38,9 @@ always @(posedge clk) begin
 case (Control) 
 4'b0000 : WriteData = ReadData1 & ReadData2; // AND
 4'b0001 : WriteData = ReadData1 | ReadData2; // OR
-4'b0010 : 
+4'b0010 :
 begin 
-  WriteData = add_out; 
+ WriteData = add_out; 
   Overflow = add_of_out; 
 end // ADD
 4'b0110 :
