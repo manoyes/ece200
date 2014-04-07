@@ -1,5 +1,7 @@
 module cpu;
 
+integer DELAY = 30;
+
 // ===== INPUTS =====
 reg clk;
 reg rst;
@@ -56,47 +58,48 @@ initial begin
   sel = 1; 
   Control = 4'b0010;
   
-  #30 immediate = 16'b0000000000001111; 
+  #DELAY immediate = 16'b0000000000001111; 
       WriteRgAddr = 4'b0010; // Write 15 to R2
       
-  #30 sel = 0; 
+  #DELAY sel = 0; 
       ReadRgAddr1 = 4'b0001; 
       WriteRgAddr = 4'b0011; 
       Control = 4'b0000; // R3 = R1 & R2
   
-  #30  WriteRgAddr = 4'b0100; 
+  #DELAY  WriteRgAddr = 4'b0100; 
       Control = 4'b0001; // R4 = R1 | R2
   
-  #30  WriteRgAddr = 4'b0101; 
-     Control = 4'b0010; // R5 = R1 + R2
+  #DELAY  WriteRgAddr = 4'b0101; 
   
-  #30  WriteRgAddr = 4'b0110; 
+   Control = 4'b0010; // R5 = R1 + R2
+  
+  #DELAY  WriteRgAddr = 4'b0110; 
       Control = 4'b0110; // R6 = R1 - R2
   
-  #30  WriteRgAddr = 4'b0111; 
+  #DELAY  WriteRgAddr = 4'b0111; 
       Control = 4'b0111; // R7 = (R1 < R2) ? 1 : 0
   
-  #30  WriteRgAddr = 4'b1000; 
+  #DELAY  WriteRgAddr = 4'b1000; 
       Control = 4'b1100; // R8 = R1 ~| R2
   
   // Stop Writes by "writing to 0"
-  #30  WriteRgAddr = 4'b0000;
+  #DELAY  WriteRgAddr = 4'b0000;
   
   $display("============================================================");
   
   // Now Iterate through memory and Read Values
        ReadRgAddr1 = 4'b0011; // Expected = 0000000000000011
-  #30  $display("============================================================");
+  #DELAY  $display("============================================================");
        ReadRgAddr1 = 4'b0100; // Expected = 0000000000001111
-  #30  $display("============================================================");
+  #DELAY  $display("============================================================");
        ReadRgAddr1 = 4'b0101; // Expected = 0000000000010010
-  #30  $display("============================================================");
+  #DELAY  $display("============================================================");
        ReadRgAddr1 = 4'b0110; // Expected = 1111111111110100
-  #30  $display("============================================================");
+  #DELAY  $display("============================================================");
        ReadRgAddr1 = 4'b0111; // Expected = 0000000000000001
-  #30  $display("============================================================");
+  #DELAY  $display("============================================================");
        ReadRgAddr1 = 4'b1000; // Expected = 1111111111110000
-  #30  $finish;
+  #DELAY  $finish;
 end
 
 always
