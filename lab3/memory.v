@@ -1,7 +1,8 @@
-module memory(clk, ReadRgAddr1, ReadRgAddr2, WriteRgAddr, WriteData, ReadData1, ReadData2);
+module memory(clk, rst, ReadRgAddr1, ReadRgAddr2, WriteRgAddr, WriteData, ReadData1, ReadData2);
   
 // ===== INPUTS =====
 input clk;
+input rst;
 input [3:0] ReadRgAddr1;
 input [3:0] ReadRgAddr2;
 input [3:0] WriteRgAddr;
@@ -19,9 +20,13 @@ reg [15:0] datastore[15:0]; // Memory storage
 
   // WRITE TO DATA STORE
   always @ (negedge clk) begin    
-    datastore[WriteRgAddr] <= WriteData;
-  end
-  
+    
+    datastore[4'b0000] <= 16'b0000000000000000;
+        
+    if (WriteRgAddr > 4'b0000) // R0 is hardwired to 0, writing to it discards the value.
+        datastore[WriteRgAddr] = WriteData; 
+    end
+     
   // READ FROM DATA STORE
   always @ (posedge clk) begin
     ReadData1 <= datastore[ReadRgAddr1];

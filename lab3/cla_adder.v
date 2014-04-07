@@ -17,6 +17,7 @@ module claadder (a, b, s, overflow);
   
   assign c[0] = 0;
   assign c[15:1] = g[14:0] | (p[14:0] & c[14:0]);
+  
   assign s = p ^ c;
   assign overflow = (a[15] & b[15] & ~s[15]) | (~a[15] & ~b[15] & s[15]);
 

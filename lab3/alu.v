@@ -13,27 +13,43 @@ output WriteData;
 reg Overflow;
 reg [15:0] WriteData;
 
-reg [15:0] adder_out; 
-reg [15:0] overflow_out; 
+wire [15:0] add_out; 
+wire [15:0] add_of_out; 
 
+wire [15:0] sub_out; 
+wire [15:0] sub_of_out; 
 
-//claadder cla(ReadData1,ReadData2,adder_out,overflow_out);
+claadder adder(
+.a        (ReadData1),
+.b        (ReadData2),
+.s        (add_out),
+.overflow (add_of_out)
+);
 
-always @(negedge clk) begin
+claadder subber(
+.a        (ReadData1),
+.b        (~ReadData2 + 1),
+.s        (sub_out),
+.overflow (sub_of_out)
+);
+
+always @(posedge clk) begin
 
 case (Control) 
 4'b0000 : WriteData = ReadData1 & ReadData2; // AND
 4'b0001 : WriteData = ReadData1 | ReadData2; // OR
-4'b0010 : WriteData = ReadData1 + ReadData2;
-//begin 
-//  WriteData = adder_out; 
-//  Overflow = overflow_out; 
-//end // ADD
-4'b0110 : WriteData = ReadData1 - ReadData2; // SUB
-4'b0111 : WriteData = (ReadData1 < ReadData2 ? 1 : 0); // SLT
+4'b0010 : 
+begin 
+  WriteData = add_out; 
+  Overflow = add_of_out; 
+end // ADD
+4'b0110 :
+begin 
+  WriteData = sub_out; 
+  Overflow = sub_of_out; 
+end // SUB
+4'b0111 : WriteData = ($signed(ReadData1) < $signed(ReadData2) ? 1 : 0); // SLT
 4'b1100 : WriteData = ~(ReadData1 | ReadData2); // NOR
-
-default : $display("Error in Control"); 
 endcase 
 
 end
