@@ -1,16 +1,17 @@
 module claadder (a, b, s, overflow);
 
-
-// ===== INPUTS =====
+  // ===== INPUTS =====
   input [15:0]a;
   input [15:0]b;
 
-// ===== OUTPUTS =====
+  // ===== OUTPUTS =====
   output [15:0]s;
   output overflow;
   
   // ===== INTERNAL =====
-  wire [15:0]p,g,c;
+  wire [15:0] p;
+  wire [15:0] g;
+  wire [15:0] c;
   
   assign g = a & b;
   assign p = a ^ b;

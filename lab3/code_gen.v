@@ -1,6 +1,4 @@
 module code_gen;
-  
-integer DELAY = 10;
 
 // ===== INPUTS =====
 reg clk;
@@ -67,7 +65,7 @@ initial begin
   @(posedge clk);
   @(negedge clk);
   
-  // add $t0, $zero, 0
+  // addi $t0, $zero, 0
   WriteRgAddr = 4'b0001;
   
   @(posedge clk);
@@ -77,28 +75,33 @@ initial begin
   // i = 0
   
   // add $t0, $t0, $t1
-    sel = 0;   
-      ReadRgAddr1 = 4'b0001; // s = $t0
-      WriteRgAddr = 4'b0001;  
+  sel = 0;   
+  ReadRgAddr1 = 4'b0001; // s = $t0
+  WriteRgAddr = 4'b0001;  
+  
   @(posedge clk);
   @(posedge clk);
   @(negedge clk);
+  
   // addi $t1, $t1, 1    
-   immediate = 16'b0000000000000001;
-      sel = 1;   
-      ReadRgAddr1 = 4'b0010;
-      WriteRgAddr = 4'b0010;
+  immediate = 16'b0000000000000001;
+  sel = 1;   
+  ReadRgAddr1 = 4'b0010;
+  WriteRgAddr = 4'b0010;
   // i = 1
+  
   @(posedge clk);
   @(posedge clk);
   @(negedge clk);
   // add $t0, $t0, $t1
- sel = 0;   
-      ReadRgAddr1 = 4'b0001; // s = $t0
-      WriteRgAddr = 4'b0001;     
+  sel = 0;   
+  ReadRgAddr1 = 4'b0001; // s = $t0
+  WriteRgAddr = 4'b0001;     
+  
   @(posedge clk);
   @(posedge clk);
   @(negedge clk);
+ 
   // addi $t1, $t1, 1    
  sel = 1;   
       ReadRgAddr1 = 4'b0010;
@@ -108,17 +111,21 @@ initial begin
   @(posedge clk);
   @(posedge clk);
   @(negedge clk);
+  
   // add $t0, $t0, $t1
   sel = 0;   
-      ReadRgAddr1 = 4'b0001; // s = $t0
-      WriteRgAddr = 4'b0001; 
+  ReadRgAddr1 = 4'b0001; // s = $t0
+  WriteRgAddr = 4'b0001; 
+  
   @(posedge clk);
   @(posedge clk);
   @(negedge clk);
+  
   // addi $t1, $t1, 1    
   sel = 1;   
-      ReadRgAddr1 = 4'b0010;
-      WriteRgAddr = 4'b0010;
+  ReadRgAddr1 = 4'b0010;
+  WriteRgAddr = 4'b0010;
+  
   @(posedge clk);
   @(posedge clk);
   @(negedge clk);
@@ -126,31 +133,37 @@ initial begin
   
   // add $t0, $t0, $t1
   sel = 0;   
-      ReadRgAddr1 = 4'b0001; // s = $t0
-      WriteRgAddr = 4'b0001; 
+  ReadRgAddr1 = 4'b0001; // s = $t0
+  WriteRgAddr = 4'b0001; 
+  
   @(posedge clk);
   @(posedge clk);
   @(negedge clk);
+  
   // addi $t1, $t1, 1    
- sel = 1;   
-      ReadRgAddr1 = 4'b0010;
-      WriteRgAddr = 4'b0010;      
+  sel = 1;   
+  ReadRgAddr1 = 4'b0010;
+  WriteRgAddr = 4'b0010;      
+  
   @(posedge clk);
   @(posedge clk);
   @(negedge clk);
     // i = 4
   
   // add $t0, $t0, $t1
-sel = 0;   
-      ReadRgAddr1 = 4'b0001; // s = $t0
-      WriteRgAddr = 4'b0001; 
+  sel = 0;   
+  ReadRgAddr1 = 4'b0001; // s = $t0
+  WriteRgAddr = 4'b0001; 
+  
   @(posedge clk);
   @(posedge clk);
   @(negedge clk);
+  
   // addi $t1, $t1, 1    
- sel = 1;   
-      ReadRgAddr1 = 4'b0010;
-      WriteRgAddr = 4'b0010;
+  sel = 1;   
+  ReadRgAddr1 = 4'b0010;
+  WriteRgAddr = 4'b0010;
+  
   @(posedge clk);
   @(posedge clk);
   @(negedge clk);
@@ -159,16 +172,18 @@ sel = 0;
   
   // add $t0, $t0, $t1
   sel = 0;   
-      ReadRgAddr1 = 4'b0001; // s = $t0
-      WriteRgAddr = 4'b0001; 
+  ReadRgAddr1 = 4'b0001; // s = $t0
+  WriteRgAddr = 4'b0001; 
+  
   @(posedge clk);
   @(posedge clk);
   @(negedge clk);
   
   // addi $t1, $t1, 1    
   sel = 1;   
-      ReadRgAddr1 = 4'b0010;
-      WriteRgAddr = 4'b0010;
+  ReadRgAddr1 = 4'b0010;
+  WriteRgAddr = 4'b0010;
+  
   @(posedge clk);
   @(posedge clk);
   @(negedge clk);
@@ -177,16 +192,18 @@ sel = 0;
   
   // add $t0, $t0, $t1
   sel = 0;   
-      ReadRgAddr1 = 4'b0001; // s = $t0
-      WriteRgAddr = 4'b0001; 
+  ReadRgAddr1 = 4'b0001; // s = $t0
+  WriteRgAddr = 4'b0001; 
+  
   @(posedge clk);
   @(posedge clk);
   @(negedge clk);
       
   // addi $t1, $t1, 1    
   sel = 1;   
-      ReadRgAddr1 = 4'b0010;
-      WriteRgAddr = 4'b0010;
+  ReadRgAddr1 = 4'b0010;
+  WriteRgAddr = 4'b0010;
+  
   @(posedge clk);
   @(posedge clk);
   @(negedge clk);
@@ -195,16 +212,18 @@ sel = 0;
   
   // add $t0, $t0, $t1
   sel = 0;   
-      ReadRgAddr1 = 4'b0001; // s = $t0
-      WriteRgAddr = 4'b0001; 
+  ReadRgAddr1 = 4'b0001; // s = $t0
+  WriteRgAddr = 4'b0001; 
+  
   @(posedge clk);
   @(posedge clk);
   @(negedge clk);
   
   // addi $t1, $t1, 1    
   sel = 1;   
-      ReadRgAddr1 = 4'b0010;
-      WriteRgAddr = 4'b0010;
+  ReadRgAddr1 = 4'b0010;
+  WriteRgAddr = 4'b0010;
+  
   @(posedge clk);
   @(posedge clk);
   @(negedge clk);
@@ -213,16 +232,18 @@ sel = 0;
   
   // add $t0, $t0, $t1
   sel = 0;   
-      ReadRgAddr1 = 4'b0001; // s = $t0
-      WriteRgAddr = 4'b0001; 
+  ReadRgAddr1 = 4'b0001; // s = $t0
+  WriteRgAddr = 4'b0001; 
+  
   @(posedge clk);
   @(posedge clk);
   @(negedge clk);
   
   // addi $t1, $t1, 1    
-   sel = 1;   
-      ReadRgAddr1 = 4'b0010;
-      WriteRgAddr = 4'b0010;
+  sel = 1;   
+  ReadRgAddr1 = 4'b0010;
+  WriteRgAddr = 4'b0010;
+  
   @(posedge clk);
   @(posedge clk);
   @(negedge clk);
@@ -231,16 +252,18 @@ sel = 0;
   
   // add $t0, $t0, $t1
   sel = 0;   
-      ReadRgAddr1 = 4'b0001; // s = $t0
-      WriteRgAddr = 4'b0001; 
+  ReadRgAddr1 = 4'b0001; // s = $t0
+  WriteRgAddr = 4'b0001; 
+  
   @(posedge clk);
   @(posedge clk);
   @(negedge clk);
       
   // addi $t1, $t1, 1    
   sel = 1;   
-      ReadRgAddr1 = 4'b0010;
-      WriteRgAddr = 4'b0010;
+  ReadRgAddr1 = 4'b0010;
+  WriteRgAddr = 4'b0010;
+  
   @(posedge clk);
   @(posedge clk);
   @(negedge clk);
@@ -250,15 +273,16 @@ sel = 0;
   // ======================== PROGRAM ENDS ========================
   
   // Now, read value of s to make sure it is correct (expected value: 45)
-   WriteRgAddr = 4'b0000;
-      ReadRgAddr1 = 4'b0001; // s
-      ReadRgAddr2 = 4'b0010; // i
+  WriteRgAddr = 4'b0000;
+  ReadRgAddr1 = 4'b0001; // s
+  ReadRgAddr2 = 4'b0010; // i
+  
   @(posedge clk);
   @(posedge clk);
   @(negedge clk);
    
-   $display ("s val is: %b, i val is: %b",ReadData1, ReadData2);
-    #5 $finish;
+  $display ("s val is: %b, i val is: %b",ReadData1, ReadData2);
+  #5 $finish;
 end
 
 always 

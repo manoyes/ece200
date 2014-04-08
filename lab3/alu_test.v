@@ -30,6 +30,6 @@ always
   #5 clk = !clk;
 
 initial
-$monitor($time, " Control=%b WriteData=%b ",Control,WriteData);
+$monitor($time, " Control=%b WriteData=%b Overflow=%b ",Control,WriteData,Overflow);
 
 endmodule

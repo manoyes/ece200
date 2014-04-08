@@ -1,7 +1,5 @@
 module cpu;
 
-integer DELAY = 30;
-
 // ===== INPUTS =====
 reg clk;
 reg rst;
@@ -63,52 +61,52 @@ initial begin
   @(negedge clk)
   
   immediate = 16'b0000000000001111; 
-      WriteRgAddr = 4'b0010; // Write 15 to R2
+  WriteRgAddr = 4'b0010; // Write 15 to R2
   
   @(posedge clk)
   @(posedge clk)
   @(negedge clk)
         
   sel = 0; 
-      ReadRgAddr1 = 4'b0001; 
-      WriteRgAddr = 4'b0011; 
-      Control = 4'b0000; // R3 = R1 & R2
+  ReadRgAddr1 = 4'b0001; 
+  WriteRgAddr = 4'b0011; 
+  Control = 4'b0000; // R3 = R1 & R2
   
   @(posedge clk)
   @(posedge clk)
   @(negedge clk)
     
   WriteRgAddr = 4'b0100; 
-      Control = 4'b0001; // R4 = R1 | R2
+  Control = 4'b0001; // R4 = R1 | R2
   
   @(posedge clk)
   @(posedge clk)
   @(negedge clk)
     
   WriteRgAddr = 4'b0101; 
-  
-   Control = 4'b0010; // R5 = R1 + R2
+  Control = 4'b0010; // R5 = R1 + R2
   
   @(posedge clk)
   @(posedge clk)
   @(negedge clk)
     
   WriteRgAddr = 4'b0110; 
-      Control = 4'b0110; // R6 = R1 - R2
+  Control = 4'b0110; // R6 = R1 - R2
   
   @(posedge clk)
   @(posedge clk)
   @(negedge clk)
   
   WriteRgAddr = 4'b0111; 
-      Control = 4'b0111; // R7 = (R1 < R2) ? 1 : 0
+  Control = 4'b0111; // R7 = (R1 < R2) ? 1 : 0
 
   @(posedge clk)
   @(posedge clk)
   @(negedge clk)
     
   WriteRgAddr = 4'b1000; 
-      Control = 4'b1100; // R8 = R1 ~| R2
+  Control = 4'b1100; // R8 = R1 ~| R2
+  
   @(posedge clk)
   @(posedge clk)
   @(negedge clk)
@@ -119,40 +117,43 @@ initial begin
   $display("============================================================");
   
   // Now Iterate through memory and Read Values
-       ReadRgAddr1 = 4'b0011; // Expected = 0000000000000011
+  ReadRgAddr1 = 4'b0011; // Expected = 0000000000000011
   
   @(posedge clk)
   @(posedge clk)
   @(negedge clk)
     
   $display("============================================================");
-       ReadRgAddr1 = 4'b0100; // Expected = 0000000000001111
+  ReadRgAddr1 = 4'b0100; // Expected = 0000000000001111
   
   @(posedge clk)
   @(posedge clk)
   @(negedge clk)
     
   $display("============================================================");
-       ReadRgAddr1 = 4'b0101; // Expected = 0000000000010010
-  @(posedge clk)
-  @(posedge clk)
-  @(negedge clk)
-    
-  $display("============================================================");
-       ReadRgAddr1 = 4'b0110; // Expected = 1111111111110100
-  @(posedge clk)
-  @(posedge clk)
-  @(negedge clk)
-  
-  $display("============================================================");
-       ReadRgAddr1 = 4'b0111; // Expected = 0000000000000001
+  ReadRgAddr1 = 4'b0101; // Expected = 0000000000010010
   
   @(posedge clk)
   @(posedge clk)
   @(negedge clk)
     
   $display("============================================================");
-       ReadRgAddr1 = 4'b1000; // Expected = 1111111111110000
+  ReadRgAddr1 = 4'b0110; // Expected = 1111111111110100
+  
+  @(posedge clk)
+  @(posedge clk)
+  @(negedge clk)
+  
+  $display("============================================================");
+  ReadRgAddr1 = 4'b0111; // Expected = 0000000000000001
+  
+  @(posedge clk)
+  @(posedge clk)
+  @(negedge clk)
+    
+  $display("============================================================");
+  ReadRgAddr1 = 4'b1000; // Expected = 1111111111110000
+  
   @(posedge clk)
   @(posedge clk)
   @(negedge clk)
