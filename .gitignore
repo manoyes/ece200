@@ -1,5 +1,6 @@
 *.bak
 lab3_work/
+work/
 *.mpf
 *.mti
 *.wlf
