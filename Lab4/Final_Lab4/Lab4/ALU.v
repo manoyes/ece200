@@ -1,97 +1,4 @@
-`timescale 1ps / 1ps
-module test_lab4;
-reg clk;
-wire [31:0] INST;
-wire [15:0] new_address, D_out;
-Lab4 ll(clk, INST, D_out, new_address);
-initial // Clock generator
-  begin
-    clk = 0;
-    forever #40 clk = !clk;
-  end
-endmodule
-
-
-module Lab4(clk, INST, D_out, new_address);
-input clk;
-
-reg [15:0] address;
-output [15:0] new_address;
-output [31:0] INST;
-
-reg [31:0] WriteData;
-wire [31:0] ReadData;
-reg[5:0] op_code;
-
-output [15:0] D_out;
-wire Over_Flow;
-
-Instruction_memory IM(address, INST);
-ALU alu(INST,D_out,address,new_address,Over_Flow);
-initial 
-begin
-address = 0;
-end 
-
-always @(posedge clk)
-begin
-address = new_address;
-//$display("address = %h, INST = %h, ALU Output = %h",address, INST,D_out);
-end
-endmodule
-
-module Control(INST, RegDst, ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch, Jump, ALUOp1, ALUOp0);
-input [31:0] INST;
-reg [5:0] op_code,funct;
-output RegDst, ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch, Jump, ALUOp1, ALUOp0;
-reg [0:9] ot;
-initial
-ot=10'b0000000000;
-always @(INST)
-begin
-op_code = INST[31:26];
-funct = INST[5:0];
-	case (op_code)
-		6'b000000: 
-			begin
-			if(funct=='b001000)  //Only the special case for jr
-					ot = 10'b1001000110;	//R-type (jr)
-			else
-					ot = 10'b1001000010;	//R-type
-			end
-		6'b100000: ot = 10'b0111100000;	//lb
-		6'b100001: ot = 10'b0111100000;	//lh
-
-		6'b101000: ot = 10'b0100010000;	//sb
-		6'b101001: ot = 10'b0100010000;	//sh
-
-		6'b000100: ot = 10'b0000001001;	//beq
-		6'b000001: ot = 10'b0000001001;	//bgez
-
-		6'b001000: ot = 10'b0101000011;	//I-type addi
-		6'b001101: ot = 10'b0101000011;	//I-type ORi
-		6'b001100: ot = 10'b0101000011;	//I-type andi
-		6'b001010: ot = 10'b0101000011;	//I-type slti
-		6'b001111: ot = 10'b0101000011;	//I-type lui
-
-		6'b000010: ot = 10'b0000000100;	//j
-		6'b000011: ot = 10'b0000000100;	//jal
-
-	endcase
-end
-assign RegDst = ot[0];
-assign ALUSrc = ot[1];
-assign MemtoReg = ot[2];
-assign RegWrite = ot[3];
-assign MemRead = ot[4];
-assign MemWrite = ot[5];
-assign Branch = ot[6];
-assign Jump = ot[7];
-assign ALUOp1 = ot[8];
-assign ALUOp0 = ot[9];
-endmodule
-
-module ALU(INST,D_out,Old_PC,New_PC,Over_Flow);
+module ALU(INST,D_out,Old_PC,New_PC,Over_Flow,RegDst, ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch, Jump, ALUOp1, ALUOp0);
 output [15:0] D_out;
 output Over_Flow;
 input[15:0] Old_PC;
@@ -99,7 +6,7 @@ output[15:0] New_PC;
 reg[15:0] PC_4,PC_immediate,Jump_target;
 reg ALU_op_zero;
 input [31:0] INST;
-wire RegDst, ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch, Jump, ALUOp1, ALUOp0;
+input RegDst, ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch, Jump, ALUOp1, ALUOp0;
 reg [15:0] Registers[0:15];
 wire [15:0] DataMemory_ReadData;
 reg OF;
@@ -109,7 +16,7 @@ reg [15:0] ReadData1, ReadData2,Alu_output, Alu_operand2, Effective_address, Dat
 reg [15:0] Immed;
 reg mode;
 reg [31:0] Prod_reg;
-Control cc(INST, RegDst, ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch, Jump, ALUOp1, ALUOp0);
+
 Data_memory DM(MemRead, MemWrite, Effective_address, DataMemory_WriteData, DataMemory_ReadData, mode);
 initial // we will put some values in the registers to test the ALU
 begin
@@ -269,71 +176,6 @@ assign {D_out, Over_Flow} = {MemtoReg==0?Alu_output:DataMemory_ReadData , OF};
 endmodule
 
 
-module Instruction_memory(Read_address, INST);
-output [31:0] INST;
-input [15:0] Read_address;
-reg [7:0] Mem[0:65535];
-reg [7:0] a1,a2,a3,a4;
-initial $readmemb("test_fact.txt",Mem); 
-
-always @(Read_address)
-begin
-a1 = Mem[Read_address];
-a2 = Mem[Read_address+1];
-a3 = Mem[Read_address+2];
-a4 = Mem[Read_address+3];
-end
-assign #5 INST = {a1, a2, a3, a4};
-endmodule
 
 
-module Data_memory(MemRead, MemWrite, address, WriteData, ReadData, mode);
-output [15:0] ReadData;
-input [15:0] address;
-input [15:0] WriteData;
-input mode;
-input MemRead, MemWrite;
-reg [7:0] Mem[0:65535];
-reg [7:0] a1,a2;
-initial $readmemb("DataMem.txt",Mem); 
-initial
-begin
-a1 = 0;
-a2 = 0;
-end
-always @(address)
-begin
-if(address!=0)
-	if(MemRead==1)
-	begin
-		
-		if(mode==0)
-			begin
-			#5 a1 = Mem[address];
-			$display("Memory read from address %h value %h",address, a1);
-			end
-		else
-		begin
-			#5 a1 = Mem[address];
-			a2 = Mem[address+1];
-			$display("Memory read from address %h value %h",address, {a1, a2});
-		end
-	end
-	else if (MemWrite==1)
-	begin
-		if(mode==0)
-			begin
-			#5 Mem[address] = WriteData[15:8];
-			$display("Memory write in address %h value %h",address, WriteData[15:8]);
-			end
-		else
-		begin
-			#5 Mem[address] = WriteData[15:8];
-			Mem[address+1] = WriteData[7:0];
-			$display("Memory write in address %h value %h",address, {WriteData[15:8], WriteData[7:0]});
-		end
-	end
-end
-assign ReadData = mode==0? {a1, 8'b00000000} : {a1, a2};
 
-endmodule
